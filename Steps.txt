@@ -1,0 +1,44 @@
+1-Service Announcement
+
+->Ask the user to specify their username and store it locally.
+->Start sending broadcast UDP messages every 8 seconds to announce the presence of the user.
+->The broadcast message should contain a JSON with the username and the IP address.
+
+2-Peer Discovery
+
+->Listen for UDP broadcast messages on port 6000.
+->Parse the received message using a JSON parser.
+->Store the obtained username and IP address in a dictionary.
+->Update the timestamp of the user in the dictionary every time a message is received from them.
+->Display the detected user on the console.
+
+3-Chat Initiation
+
+->Prompt the user to specify whether they would like to view online users, initiate chat, or view chat history.
+->Display the list of discovered users whose broadcast messages have been received within the last 15 minutes.
+->Ask the user to enter the name of the user to chat with.
+->Ask the user whether they'll chat securely or not.
+->If secure, initiate a TCP session with the IP address of the specified user and send a JSON with a key.
+->If unsecure, allow the user to type their message and send it in a JSON.
+->Log the sent message in a log along with timestamp and the username to whom the message was sent.
+->Display an error message if a connection with the end user cannot be established.
+->Display a log including timestamp, username, message content, and whether it was SENT or RECEIVED when the user specifies "History".
+
+4-Chat Responder
+
+->Listen for TCP connections on port 6001.
+->Accept TCP connection request before it times out.
+->Parse the JSON in the message to learn whether a key is being exchanged or a message (encrypted/unencrypted) is being received.
+->Generate its own key and send it if the parsed message has a JSON key of "key".
+->Decrypt and display the message on the console if the parsed message has a JSON key of "encrypted message".
+->Display the message contents on the console if the parsed message has a JSON key of "unencrypted message".
+->Log the message in the log. Each entry should specify timestamp, sender's username, and the message, marked as "SENT".
+->Continue to listen on port 6001 after a TCP session is closed.
+
+5-Chat History
+
+->Allow the end user to view the chat history (timestamp, name of peer, IP address of peer, sent/received, text).
+
+6-Security
+
+->Generate a shared secret key using the Diffie-Hellman key exchange algorithm, and use that key to encrypt exchanged messages.
